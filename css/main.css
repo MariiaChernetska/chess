@@ -1,0 +1,64 @@
+.cell{
+    height: 50px;
+    width: 50px;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+}
+.cell.dark{
+    background-color: #8C4E35;
+}
+.cell.light{
+    background-color: #FAAF57;
+}
+#board{
+    width:400px;
+}
+
+.piece{
+    height: 40px;
+    width: auto;
+    background-size: contain;
+    background-position: center center;
+    margin-top: 5px;
+
+}
+.bishop-black{
+    background-image: url('../img/bishop-b.svg');
+}
+.bishop-white{
+    background-image: url('../img/bishop-w.svg');
+}
+
+.king-black{
+    background-image: url('../img/king-b.svg');
+}
+.king-white{
+    background-image: url('../img/king-w.svg');
+}
+
+.knight-black{
+    background-image: url('../img/knight-b.svg');
+}
+.knight-white{
+    background-image: url('../img/knight-w.svg');
+}
+
+.pawn-black{
+    background-image: url('../img/pawn-b.svg');
+}
+.pawn-white{
+    background-image: url('../img/pawn-w.svg');
+}
+.queen-black{
+    background-image: url('../img/queen-b.svg');
+}
+.queen-white{
+    background-image: url('../img/queen-w.svg');
+}
+.rok-black{
+    background-image: url('../img/rok-b.svg');
+}
+.rok-white{
+    background-image: url('../img/rok-w.svg');
+}

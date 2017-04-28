@@ -1,0 +1,17 @@
+{
+  "name": "ui",
+  "version": "1.0.0",
+  "description": "chess",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --config webpack.config.js",
+    "watch": "npm run build -- --watch"
+  },
+  "author": "Mariia Chernetska",
+  "license": "ISC",
+  "devDependencies": {
+    "ts-loader": "^2.0.3",
+    "typescript": "^2.3.1",
+    "webpack": "^2.4.1"
+  }
+}
