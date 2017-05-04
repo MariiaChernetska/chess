@@ -1,15 +1,15 @@
-﻿import {Piece} from './Piece'
+import {Piece} from './Piece'
 import {Color} from './Piece'
 import {Coordinates} from './Coordinates'
 
-export class King extends Piece {
+export class Rok extends Piece {
     constructor(color: Color, coordinates: Coordinates) {
 
           if (color == Color.Black) {
-                super(coordinates, true, "king-black")
+                super(coordinates, true, "rok-black")
             }
             else {
-                super(coordinates, true, "king-white")
+                super(coordinates, true, "rok-white")
             }
     }
 }
