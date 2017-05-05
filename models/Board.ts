@@ -8,9 +8,10 @@ import {Knight} from './Knight'
 import {Rok} from './Rok'
 import {Color} from './Piece'
 import {Piece} from './Piece'
-
+import {DragnDrop} from '../src/dragdrop'
 export class Board{
     cells: any = [];
+    dr = new DragnDrop()
     reverseCells: any = []
     board: HTMLElement = document.getElementById('board');
     reverseBoard: HTMLElement = document.getElementById('reverse-board');
@@ -35,6 +36,7 @@ export class Board{
                 this.cells[i].push(new Cell(true, false, new Coordinates(i, j)));
                 let cell = document.createElement('div');
                 cell.id = i.toString()+j.toString();
+                
                 if(i%2==0){
                     if(j%2==0){
                         cell.className = "cell light";
@@ -52,6 +54,7 @@ export class Board{
                        cell.className = "cell light";
                     }
                 }
+                if(cell.id == '45') cell.className = "cell dark droppable";
                 board.appendChild(cell)
 
             }
