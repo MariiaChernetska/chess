@@ -132,11 +132,11 @@ export class Board{
 
     }
     drawFigure(figure: Piece){
-        let elementId = figure.position.y.toString()+figure.position.x.toString();
-        let cell = document.getElementById(elementId);
+        let targetCell = figure.position.y.toString()+figure.position.x.toString();
+        let cell = document.getElementById(targetCell);
         let piece = document.createElement("div")
         piece.className = figure.className;
-        piece.dataset.coords = figure.position.x.toString()
+        piece.dataset.coords = targetCell;
         cell.appendChild(piece)
     }
 }
