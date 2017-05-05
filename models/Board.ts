@@ -11,7 +11,7 @@ import {Piece} from './Piece'
 import {DragnDrop} from '../src/dragdrop'
 export class Board{
     cells: any = [];
-    dr = new DragnDrop()
+    
     reverseCells: any = []
     board: HTMLElement = document.getElementById('board');
     reverseBoard: HTMLElement = document.getElementById('reverse-board');
@@ -118,8 +118,8 @@ export class Board{
                     new Queen(Color.White, new Coordinates(3, 0)),
                     new Bishop(Color.White, new Coordinates(2, 0)),
                     new Bishop(Color.White, new Coordinates(5, 0)),
-                    new Rok(Color.White, new Coordinates(1, 0)),
-                    new Rok(Color.White, new Coordinates(6, 0)),
+                    new Knight(Color.White, new Coordinates(1, 0)),
+                    new Knight(Color.White, new Coordinates(6, 0)),
                     new Rok(Color.White, new Coordinates(0, 0)),
                     new Rok(Color.White, new Coordinates(7, 0))
                     );
@@ -136,6 +136,7 @@ export class Board{
         let cell = document.getElementById(elementId);
         let piece = document.createElement("div")
         piece.className = figure.className;
+        piece.dataset.coords = figure.position.x.toString()
         cell.appendChild(piece)
     }
 }

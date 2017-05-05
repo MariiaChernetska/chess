@@ -1,2 +1,2 @@
-import {Board} from './models/Board'
-let b = new Board();
+import {Game} from './src/Game'
+let b = new Game();

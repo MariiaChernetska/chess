@@ -106,9 +106,7 @@ var Color;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Knight__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__Rok__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__Piece__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__src_dragdrop__ = __webpack_require__(11);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Board; });
-
 
 
 
@@ -121,7 +119,6 @@ var Color;
 var Board = (function () {
     function Board() {
         this.cells = [];
-        this.dr = new __WEBPACK_IMPORTED_MODULE_9__src_dragdrop__["a" /* DragnDrop */]();
         this.reverseCells = [];
         this.board = document.getElementById('board');
         this.reverseBoard = document.getElementById('reverse-board');
@@ -201,7 +198,7 @@ var Board = (function () {
             this.whitePieces.push(new __WEBPACK_IMPORTED_MODULE_4__Pawn__["a" /* Pawn */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](i, 1)));
         }
         this.blackPieces.push(new __WEBPACK_IMPORTED_MODULE_2__King__["a" /* King */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].Black, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](4, 7)), new __WEBPACK_IMPORTED_MODULE_3__Queen__["a" /* Queen */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].Black, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](3, 7)), new __WEBPACK_IMPORTED_MODULE_5__Bishop__["a" /* Bishop */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].Black, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](2, 7)), new __WEBPACK_IMPORTED_MODULE_5__Bishop__["a" /* Bishop */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].Black, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](5, 7)), new __WEBPACK_IMPORTED_MODULE_6__Knight__["a" /* Knight */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].Black, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](1, 7)), new __WEBPACK_IMPORTED_MODULE_6__Knight__["a" /* Knight */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].Black, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](6, 7)), new __WEBPACK_IMPORTED_MODULE_7__Rok__["a" /* Rok */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].Black, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](0, 7)), new __WEBPACK_IMPORTED_MODULE_7__Rok__["a" /* Rok */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].Black, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](7, 7)));
-        this.whitePieces.push(new __WEBPACK_IMPORTED_MODULE_2__King__["a" /* King */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](4, 0)), new __WEBPACK_IMPORTED_MODULE_3__Queen__["a" /* Queen */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](3, 0)), new __WEBPACK_IMPORTED_MODULE_5__Bishop__["a" /* Bishop */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](2, 0)), new __WEBPACK_IMPORTED_MODULE_5__Bishop__["a" /* Bishop */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](5, 0)), new __WEBPACK_IMPORTED_MODULE_7__Rok__["a" /* Rok */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](1, 0)), new __WEBPACK_IMPORTED_MODULE_7__Rok__["a" /* Rok */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](6, 0)), new __WEBPACK_IMPORTED_MODULE_7__Rok__["a" /* Rok */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](0, 0)), new __WEBPACK_IMPORTED_MODULE_7__Rok__["a" /* Rok */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](7, 0)));
+        this.whitePieces.push(new __WEBPACK_IMPORTED_MODULE_2__King__["a" /* King */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](4, 0)), new __WEBPACK_IMPORTED_MODULE_3__Queen__["a" /* Queen */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](3, 0)), new __WEBPACK_IMPORTED_MODULE_5__Bishop__["a" /* Bishop */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](2, 0)), new __WEBPACK_IMPORTED_MODULE_5__Bishop__["a" /* Bishop */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](5, 0)), new __WEBPACK_IMPORTED_MODULE_6__Knight__["a" /* Knight */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](1, 0)), new __WEBPACK_IMPORTED_MODULE_6__Knight__["a" /* Knight */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](6, 0)), new __WEBPACK_IMPORTED_MODULE_7__Rok__["a" /* Rok */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](0, 0)), new __WEBPACK_IMPORTED_MODULE_7__Rok__["a" /* Rok */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](7, 0)));
         this.blackPieces.forEach(function (element) {
             _this.drawFigure(element);
         });
@@ -214,6 +211,7 @@ var Board = (function () {
         var cell = document.getElementById(elementId);
         var piece = document.createElement("div");
         piece.className = figure.className;
+        piece.dataset.coords = figure.position.x.toString();
         cell.appendChild(piece);
     };
     return Board;
@@ -227,9 +225,9 @@ var Board = (function () {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_Board__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_Game__ = __webpack_require__(12);
 
-var b = new __WEBPACK_IMPORTED_MODULE_0__models_Board__["a" /* Board */]();
+var b = new __WEBPACK_IMPORTED_MODULE_0__src_Game__["a" /* Game */]();
 
 
 /***/ }),
@@ -315,6 +313,7 @@ var Coordinates = (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Piece__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Coordinates__ = __webpack_require__(5);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return King; });
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -326,6 +325,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+
 
 
 var King = (function (_super) {
@@ -340,6 +340,18 @@ var King = (function (_super) {
         }
         return _this;
     }
+    King.prototype.getPossibleCells = function (initCoords) {
+        var top = new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](initCoords.x, initCoords.y + 1);
+        var back = new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](initCoords.x, initCoords.y - 1);
+        var left = new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](initCoords.x - 1, initCoords.y);
+        var right = new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](initCoords.x + 1, initCoords.y);
+        var topLeft = new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](initCoords.x - 1, initCoords.y + 1);
+        var topRight = new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](initCoords.x + 1, initCoords.y + 1);
+        var backLeft = new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](initCoords.x - 1, initCoords.y - 1);
+        var backRight = new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](initCoords.x + 1, initCoords.y - 1);
+        var newCoords = [top, back, left, right, topLeft, topRight, backLeft, backRight];
+        return newCoords;
+    };
     return King;
 }(__WEBPACK_IMPORTED_MODULE_0__Piece__["b" /* Piece */]));
 
@@ -606,6 +618,26 @@ var DragnDrop = (function () {
         return clone;
     };
     return DragnDrop;
+}());
+
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_dragdrop__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_Board__ = __webpack_require__(1);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Game; });
+
+
+var Game = (function () {
+    function Game() {
+        this.board = new __WEBPACK_IMPORTED_MODULE_1__models_Board__["a" /* Board */]();
+        this.dr = new __WEBPACK_IMPORTED_MODULE_0__src_dragdrop__["a" /* DragnDrop */]();
+    }
+    return Game;
 }());
 
 

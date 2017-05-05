@@ -22,7 +22,7 @@ export class DragnDrop{
         this.element.downY = e.pageY;
         return false;
     }
-    mouseMove(e){
+    mouseMove(e:any){
           if (!this.element.elem) return; 
 
     if (!this.element.clone) { 
@@ -47,7 +47,7 @@ export class DragnDrop{
     this.element.clone.style.top = e.pageY - this.element.shiftY + 'px';
     return false;
 }
- findDroppable(event) {
+ findDroppable(event:any) {
     this.element.clone.hidden = true;
     var elem = document.elementFromPoint(event.clientX, event.clientY);
     this.element.clone.hidden = false;
@@ -56,19 +56,19 @@ export class DragnDrop{
     }
     return elem.closest('.droppable');
   }
- startDrag(e) {
+ startDrag(e:any) {
     var clone = this.element.clone;
     document.body.appendChild(clone);
     clone.style.zIndex = 9999;
     clone.style.position = 'absolute';
   }
-    mouseUp(e) {
+    mouseUp(e:any) {
     if (this.element.clone) { 
       this.finishDrag(e);
     }
     this.element = new DragElement();
   }
-  finishDrag(e) {
+  finishDrag(e:any) {
     var dropElem = this.findDroppable(e);
 
     if (!dropElem) {
@@ -77,20 +77,20 @@ export class DragnDrop{
       this.onDragEnd(this.element, dropElem);
     }
   }
-onDragCancel(dragObject) {
+onDragCancel(dragObject:any) {
       dragObject.clone.rollback();
     };
-onDragEnd(dragObject, dropElem) {
+onDragEnd(dragObject:any, dropElem:any) {
     dropElem.appendChild(dragObject.elem)
     };
-getCoords(elem) { 
+getCoords(elem:any) { 
   var box = elem.getBoundingClientRect();
   return {
     top: box.top + pageYOffset,
     left: box.left + pageXOffset
   };
 }
-    createClone(e){
+    createClone(e:any){
         var clone = this.element.elem;
          var old = {
       parent: clone.parentNode,
