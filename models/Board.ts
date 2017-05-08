@@ -74,7 +74,7 @@ export class Board{
 
             }
         }
-        console.log(this.cells)
+     
 
     }
     drawReverseBoard(board: HTMLElement){
@@ -90,7 +90,7 @@ export class Board{
                     }
                     else{
                         cell.className = "cell dark";
-
+ 
                     }
                 }
                 else{
@@ -105,17 +105,17 @@ export class Board{
 
             }
         }
-        console.log(this.cells)
+ 
 
     }
     addFigures(){
             for(let i = 0; i<8; i++){
                 this.blackPieces.Pawns.push(
-                        new Pawn(Color.Black, new Coordinates(i,6))
+                        new Pawn(Color.Black, new Coordinates(i,6), "pb"+i)
                 ); 
                 this.drawFigure(this.blackPieces.Pawns[i])
                     this.whitePieces.Pawns.push(
-                        new Pawn(Color.White, new Coordinates(i,1))
+                        new Pawn(Color.White, new Coordinates(i,1), "pw"+i)
                 ); 
                 this.drawFigure(this.whitePieces.Pawns[i])
             }
@@ -153,6 +153,7 @@ export class Board{
         let piece = document.createElement("div")
         piece.className = figure.className;
         piece.dataset.coords = targetCell;
+        piece.dataset.id = figure.id;
         cell.appendChild(piece);
         return figure;
     }

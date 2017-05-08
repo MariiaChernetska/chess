@@ -117,19 +117,66 @@ var Coordinates = (function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_Coordinates__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_Piece__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dragdrop__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_Board__ = __webpack_require__(5);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Game; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__dragdrop__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_Board__ = __webpack_require__(5);
+
+
 
 
 var Game = (function () {
     function Game() {
-        this.board = new __WEBPACK_IMPORTED_MODULE_1__models_Board__["a" /* Board */]();
-        this.drag = new __WEBPACK_IMPORTED_MODULE_0__dragdrop__["a" /* DragnDrop */](this.getElement);
-        console.log(this.board.blackPieces.King.getPossibleCells(this.board.blackPieces.King.position));
+        this.board = new __WEBPACK_IMPORTED_MODULE_3__models_Board__["a" /* Board */]();
+        this.drag = new __WEBPACK_IMPORTED_MODULE_2__dragdrop__["a" /* DragnDrop */](this.getElement, this.removeHighlighting);
+        //console.log(this.board.blackPieces.King.getPossibleCells(this.board.blackPieces.King.position))
+        Game.self = this;
     }
     Game.prototype.getElement = function (elem) {
-        console.log(elem);
+        if (elem.elem.className.indexOf("pawn") != -1) {
+            Game.self.pawnAction(elem);
+        }
+    };
+    Game.prototype.pawnAction = function (elem) {
+        var pawn = {};
+        var possibleMoves = [];
+        var initCoords = new __WEBPACK_IMPORTED_MODULE_0__models_Coordinates__["a" /* Coordinates */](elem.elem.dataset.coords.charAt(1), elem.elem.dataset.coords.charAt(0));
+        if (elem.elem.className.indexOf("black") != -1) {
+            this.board.blackPieces.Pawns.forEach(function (element) {
+                if (elem.elem.dataset.id == element.id) {
+                    pawn = element;
+                }
+            });
+            pawn.position = initCoords;
+            possibleMoves = pawn.getPossibleCells(pawn.position, __WEBPACK_IMPORTED_MODULE_1__models_Piece__["a" /* Color */].Black);
+            this.hightlightCells(possibleMoves);
+            console.log(possibleMoves);
+        }
+        else {
+            this.board.whitePieces.Pawns.forEach(function (element) {
+                if (elem.elem.dataset.id == element.id) {
+                    pawn = element;
+                }
+            });
+            pawn.position = initCoords;
+            possibleMoves = pawn.getPossibleCells(pawn.position, __WEBPACK_IMPORTED_MODULE_1__models_Piece__["a" /* Color */].White);
+            this.hightlightCells(possibleMoves);
+            console.log(possibleMoves);
+        }
+    };
+    Game.prototype.hightlightCells = function (cellCoords) {
+        cellCoords.forEach(function (element) {
+            var buf = element.y.toString() + element.x.toString();
+            var cell = document.getElementById(buf);
+            cell.className += " possibleCell droppable";
+        });
+    };
+    Game.prototype.removeHighlighting = function () {
+        var cells = document.getElementsByClassName("cell");
+        for (var i = 0; i < cells.length; i++) {
+            cells[i].className = cells[i].className.replace(" possibleCell droppable", "");
+        }
     };
     return Game;
 }());
@@ -152,8 +199,8 @@ var b = new __WEBPACK_IMPORTED_MODULE_0__src_Game__["a" /* Game */]();
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Bishop; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Piece__ = __webpack_require__(0);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Bishop; });
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -188,7 +235,6 @@ var Bishop = (function (_super) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Board; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Cell__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Coordinates__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__King__ = __webpack_require__(7);
@@ -198,6 +244,7 @@ var Bishop = (function (_super) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Knight__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__Rok__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__Piece__ = __webpack_require__(0);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Board; });
 
 
 
@@ -261,7 +308,6 @@ var Board = (function () {
                 board.appendChild(cell);
             }
         }
-        console.log(this.cells);
     };
     Board.prototype.drawReverseBoard = function (board) {
         for (var i = 7; i >= 0; i--) {
@@ -289,13 +335,12 @@ var Board = (function () {
                 board.appendChild(cell);
             }
         }
-        console.log(this.cells);
     };
     Board.prototype.addFigures = function () {
         for (var i = 0; i < 8; i++) {
-            this.blackPieces.Pawns.push(new __WEBPACK_IMPORTED_MODULE_4__Pawn__["a" /* Pawn */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].Black, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](i, 6)));
+            this.blackPieces.Pawns.push(new __WEBPACK_IMPORTED_MODULE_4__Pawn__["a" /* Pawn */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].Black, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](i, 6), "pb" + i));
             this.drawFigure(this.blackPieces.Pawns[i]);
-            this.whitePieces.Pawns.push(new __WEBPACK_IMPORTED_MODULE_4__Pawn__["a" /* Pawn */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](i, 1)));
+            this.whitePieces.Pawns.push(new __WEBPACK_IMPORTED_MODULE_4__Pawn__["a" /* Pawn */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](i, 1), "pw" + i));
             this.drawFigure(this.whitePieces.Pawns[i]);
         }
         this.blackPieces.Bishops.push(this.drawFigure(new __WEBPACK_IMPORTED_MODULE_5__Bishop__["a" /* Bishop */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].Black, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](2, 7))), this.drawFigure(new __WEBPACK_IMPORTED_MODULE_5__Bishop__["a" /* Bishop */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].Black, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](5, 7))));
@@ -315,6 +360,7 @@ var Board = (function () {
         var piece = document.createElement("div");
         piece.className = figure.className;
         piece.dataset.coords = targetCell;
+        piece.dataset.id = figure.id;
         cell.appendChild(piece);
         return figure;
     };
@@ -351,9 +397,9 @@ var Cell = (function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return King; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Piece__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Coordinates__ = __webpack_require__(1);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return King; });
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -404,8 +450,8 @@ var King = (function (_super) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Knight; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Piece__ = __webpack_require__(0);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Knight; });
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -440,8 +486,9 @@ var Knight = (function (_super) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Pawn; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Piece__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Coordinates__ = __webpack_require__(1);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Pawn; });
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -454,9 +501,10 @@ var __extends = (this && this.__extends) || (function () {
 })();
 
 
+
 var Pawn = (function (_super) {
     __extends(Pawn, _super);
-    function Pawn(color, coordinates) {
+    function Pawn(color, coordinates, id) {
         var _this = this;
         if (color == __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* Color */].Black) {
             _this = _super.call(this, coordinates, true, "pawn-black") || this;
@@ -464,8 +512,44 @@ var Pawn = (function (_super) {
         else {
             _this = _super.call(this, coordinates, true, "pawn-white") || this;
         }
+        _this.madeFirstMove = false;
+        _this.id = id;
         return _this;
     }
+    Pawn.prototype.getPossibleCells = function (initCoords, figureColor, beat) {
+        var newCoords = [];
+        if (figureColor == __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* Color */].Black) {
+            if (this.madeFirstMove) {
+                newCoords.push(new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](initCoords.x, initCoords.y - 1));
+            }
+            else {
+                var c1 = new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](initCoords.x, initCoords.y - 1);
+                var c2 = new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](initCoords.x, initCoords.y - 2);
+                newCoords.push(c1, c2);
+            }
+            if (beat) {
+                beat.forEach(function (element) {
+                    newCoords.push(new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](element.x, element.y));
+                });
+            }
+        }
+        else {
+            if (this.madeFirstMove) {
+                newCoords.push(new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](+initCoords.x, +initCoords.y + 1));
+            }
+            else {
+                var c1 = new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](+initCoords.x, +initCoords.y + 1);
+                var c2 = new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](+initCoords.x, +initCoords.y + 2);
+                newCoords.push(c1, c2);
+            }
+            if (beat) {
+                beat.forEach(function (element) {
+                    newCoords.push(new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](element.x, element.y));
+                });
+            }
+        }
+        return newCoords;
+    };
     return Pawn;
 }(__WEBPACK_IMPORTED_MODULE_0__Piece__["b" /* Piece */]));
 
@@ -476,8 +560,8 @@ var Pawn = (function (_super) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Queen; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Piece__ = __webpack_require__(0);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Queen; });
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -512,8 +596,8 @@ var Queen = (function (_super) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Rok; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Piece__ = __webpack_require__(0);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Rok; });
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -555,12 +639,13 @@ var DragElement = (function () {
     return DragElement;
 }());
 var DragnDrop = (function () {
-    function DragnDrop(elementGetter) {
+    function DragnDrop(elementGetter, hightLightRemover) {
         this.element = new DragElement();
         document.onmousedown = this.mouseDown.bind(this);
         document.onmousemove = this.mouseMove.bind(this);
         document.onmouseup = this.mouseUp.bind(this);
         this.elementGetter = elementGetter;
+        this.hightLightRemover = hightLightRemover;
     }
     DragnDrop.prototype.mouseDown = function (e) {
         if (e.which != 1)
@@ -616,7 +701,11 @@ var DragnDrop = (function () {
         if (this.element.clone) {
             this.finishDrag(e);
         }
+        if (this.element.elem) {
+            this.element.elem.dataset.coords = this.element.elem.parentElement.id;
+        }
         this.element = new DragElement();
+        this.hightLightRemover();
     };
     DragnDrop.prototype.finishDrag = function (e) {
         var dropElem = this.findDroppable(e);

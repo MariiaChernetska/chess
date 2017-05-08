@@ -65,3 +65,6 @@ body{
 .rok-white{
     background-image: url('../img/rok-w.svg');
 }
+div.possibleCell{
+    background-color: #fff !important;
+}
