@@ -6,6 +6,7 @@
             this.x = x;
             this.y = y;
         }
+        else return
         
     }
 }

@@ -8,10 +8,12 @@ class DragElement{
 }
 export class DragnDrop{
     element: DragElement = new DragElement();
-    constructor(){
+    elementGetter: Function;
+    constructor(elementGetter: any){
         document.onmousedown = this.mouseDown.bind(this);
         document.onmousemove = this.mouseMove.bind(this);
         document.onmouseup = this.mouseUp.bind(this);
+        this.elementGetter = elementGetter;
     }
     mouseDown(e:any){
         if (e.which != 1) return;
@@ -20,6 +22,9 @@ export class DragnDrop{
         this.element.elem = elem;
         this.element.downX = e.pageX;
         this.element.downY = e.pageY;
+        this.elementGetter(this.element)
+        
+
         return false;
     }
     mouseMove(e:any){

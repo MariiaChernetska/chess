@@ -13,15 +13,18 @@ export class King extends Piece {
             }
     }
     getPossibleCells(initCoords: Coordinates): Array<Coordinates>{
-        let top = new Coordinates(initCoords.x, initCoords.y+1);
-        let back = new Coordinates(initCoords.x, initCoords.y-1);
-        let left = new Coordinates(initCoords.x-1, initCoords.y);
-        let right = new Coordinates(initCoords.x+1, initCoords.y);
-        let topLeft = new Coordinates(initCoords.x-1, initCoords.y+1);
-        let topRight = new Coordinates(initCoords.x+1, initCoords.y+1);
-        let backLeft = new Coordinates(initCoords.x-1, initCoords.y-1);
-        let backRight = new Coordinates(initCoords.x+1, initCoords.y-1);
-        let newCoords = [top, back, left,right, topLeft, topRight, backLeft, backRight];
+        let newCoords = [];
+        for(let i = -1; i<2; i++){
+            for(let j = -1; j<2; j++){
+               if(i==0 && j==0) {continue;}
+               let coords = new Coordinates(initCoords.x+i, initCoords.y+j);
+               if(coords.x)
+               {
+                    newCoords.push(coords);
+               }
+               
+            }
+        }
         return newCoords;
         
     }
