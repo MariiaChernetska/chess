@@ -3,13 +3,13 @@ import {Color} from './Piece'
 import {Coordinates} from './Coordinates'
 
 export class Bishop extends Piece {
-    constructor(color: Color, coordinates: Coordinates) {
+    constructor(color: Color, coordinates: Coordinates, id: string) {
 
           if (color == Color.Black) {
-                super(coordinates, true, "bishop-black")
+                super(coordinates, true, "bishop-black", id)
             }
             else {
-                super(coordinates, true, "bishop-white")
+                super(coordinates, true, "bishop-white", id)
             }
     }
 }

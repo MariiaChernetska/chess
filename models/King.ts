@@ -3,13 +3,13 @@ import {Color} from './Piece'
 import {Coordinates} from './Coordinates'
 
 export class King extends Piece {
-    constructor(color: Color, coordinates: Coordinates) {
+    constructor(color: Color, coordinates: Coordinates, id:string) {
 
           if (color == Color.Black) {
-                super(coordinates, true, "king-black")
+                super(coordinates, true, "king-black", id)
             }
             else {
-                super(coordinates, true, "king-white")
+                super(coordinates, true, "king-white", id)
             }
     }
     getPossibleCells(initCoords: Coordinates): Array<Coordinates>{

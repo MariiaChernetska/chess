@@ -3,12 +3,12 @@ export class Piece {
     position: Coordinates;
     onBoard: boolean;
     color: Color;
-  
+    id: string;
     className: string;
-    constructor(position: Coordinates, onBoard: boolean, className: string) {
+    constructor(position: Coordinates, onBoard: boolean, className: string, id: string) {
         this.onBoard = onBoard;
         this.position = position;
-        
+        this.id = id;
         this.className = "piece "+className;
     }
 

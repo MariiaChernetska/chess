@@ -15,17 +15,19 @@ export class Game{
     board: Board = new Board();
     drag: DragnDrop = new DragnDrop(this.getElement, this.removeHighlighting);
     static self: any;
-    pA: Function;
+    figure: any;
     constructor(){
         //console.log(this.board.blackPieces.King.getPossibleCells(this.board.blackPieces.King.position))
        Game.self = this;
     }
     getElement(elem:any){
-         if(elem.elem.className.indexOf("pawn") != -1){
-            Game.self.pawnAction(elem)
+         if(elem.className.indexOf("pawn") != -1){
+           // Game.self.pawnAction(elem)
          }
         
+        
     }
+    
     pawnAction(elem:any){
        
             let pawn: any = {};

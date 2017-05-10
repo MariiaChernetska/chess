@@ -24,7 +24,7 @@ export class DragnDrop{
         this.element.elem = elem;
         this.element.downX = e.pageX;
         this.element.downY = e.pageY;
-        this.elementGetter(this.element)
+        this.elementGetter(this.element.elem)
         
 
         return false;

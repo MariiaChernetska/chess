@@ -8,13 +8,16 @@ export class Pawn extends Piece {
     constructor(color: Color, coordinates: Coordinates, id: string) {
        
           if (color == Color.Black) {
-                super(coordinates, true, "pawn-black")
+                super(coordinates, true, "pawn-black", id)
             }
             else {
-                super(coordinates, true, "pawn-white")
+                super(coordinates, true, "pawn-white", id)
             }
             this.madeFirstMove = false;
         this.id = id;
+    }
+    makeFirstMove(){
+        this.madeFirstMove = true;
     }
     getPossibleCells(initCoords: Coordinates, figureColor: Color, beat?:Array<Coordinates>): Array<Coordinates>{
         let newCoords: Array<Coordinates> = [];

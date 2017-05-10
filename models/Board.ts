@@ -120,29 +120,29 @@ export class Board{
                 this.drawFigure(this.whitePieces.Pawns[i])
             }
             this.blackPieces.Bishops.push(
-                   this.drawFigure(new Bishop(Color.Black, new Coordinates(2, 7))),
-                    this.drawFigure(new Bishop(Color.Black, new Coordinates(5, 7))));
+                   this.drawFigure(new Bishop(Color.Black, new Coordinates(2, 7), "bb0")),
+                    this.drawFigure(new Bishop(Color.Black, new Coordinates(5, 7), "bb1")));
             this.blackPieces.Knights.push(
-                    this.drawFigure(new Knight(Color.Black, new Coordinates(1, 7))),
-                    this.drawFigure(new Knight(Color.Black, new Coordinates(6, 7))));
+                    this.drawFigure(new Knight(Color.Black, new Coordinates(1, 7), "kb0")),
+                    this.drawFigure(new Knight(Color.Black, new Coordinates(6, 7), "kb1")));
             this.blackPieces.Roks.push(
-                    this.drawFigure(new Rok(Color.Black, new Coordinates(0, 7))),
-                    this.drawFigure(new Rok(Color.Black, new Coordinates(7, 7))));
-            this.blackPieces.King =  this.drawFigure(new King(Color.Black, new Coordinates(4, 7)));
-            this.blackPieces.Queen = this.drawFigure(new Queen(Color.Black, new Coordinates(3, 7)));
+                    this.drawFigure(new Rok(Color.Black, new Coordinates(0, 7), "rb0")),
+                    this.drawFigure(new Rok(Color.Black, new Coordinates(7, 7), "rb1")));
+            this.blackPieces.King =  this.drawFigure(new King(Color.Black, new Coordinates(4, 7),"Kb0"));
+            this.blackPieces.Queen = this.drawFigure(new Queen(Color.Black, new Coordinates(3, 7), "qb0"));
 
           this.whitePieces.Bishops.push(
-                    this.drawFigure(new Bishop(Color.White, new Coordinates(2, 0))),
-                    this.drawFigure(new Bishop(Color.White, new Coordinates(5, 0))));
+                    this.drawFigure(new Bishop(Color.White, new Coordinates(2, 0), "bw0")),
+                    this.drawFigure(new Bishop(Color.White, new Coordinates(5, 0), "bw1")));
 
             this.whitePieces.Knights.push(
-                    this.drawFigure(new Knight(Color.White, new Coordinates(1, 0))),
-                    this.drawFigure(new Knight(Color.White, new Coordinates(6, 0))));
+                    this.drawFigure(new Knight(Color.White, new Coordinates(1, 0), "kw0")),
+                    this.drawFigure(new Knight(Color.White, new Coordinates(6, 0), "kw1")));
             this.whitePieces.Roks.push(
-                    this.drawFigure(new Rok(Color.White, new Coordinates(0, 0))),
-                    this.drawFigure(new Rok(Color.White, new Coordinates(7, 0))));
-            this.whitePieces.King =  this.drawFigure(new King(Color.White, new Coordinates(4, 0)));
-            this.whitePieces.Queen = this.drawFigure(new Queen(Color.White, new Coordinates(3, 0)));
+                    this.drawFigure(new Rok(Color.White, new Coordinates(0, 0), "rw0")),
+                    this.drawFigure(new Rok(Color.White, new Coordinates(7, 0), "rw1")));
+            this.whitePieces.King =  this.drawFigure(new King(Color.White, new Coordinates(4, 0), "Kw0"));
+            this.whitePieces.Queen = this.drawFigure(new Queen(Color.White, new Coordinates(3, 0),"qw0"));
           
     
 
@@ -153,7 +153,7 @@ export class Board{
         let piece = document.createElement("div")
         piece.className = figure.className;
         piece.dataset.coords = targetCell;
-        piece.dataset.id = figure.id;
+        piece.id = figure.id;
         cell.appendChild(piece);
         return figure;
     }
