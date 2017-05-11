@@ -5,11 +5,12 @@ export class Piece {
     color: Color;
     id: string;
     className: string;
-    constructor(position: Coordinates, onBoard: boolean, className: string, id: string) {
+    constructor(position: Coordinates, onBoard: boolean, className: string, id: string, color:Color) {
         this.onBoard = onBoard;
         this.position = position;
         this.id = id;
         this.className = "piece "+className;
+        this.color = color;
     }
 
     leaveBoard() {

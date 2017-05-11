@@ -31,8 +31,10 @@ export class Board{
     board: HTMLElement = document.getElementById('board');
     reverseBoard: HTMLElement = document.getElementById('reverse-board');
     gameColor: Color;
-    whitePieces: Side = new Side();
-    blackPieces: Side = new Side();
+   /* whitePieces: Side = new Side();
+    blackPieces: Side = new Side();*/
+    whitePieces: Array<any> = [];
+    blackPieces: Array<any> = [];
     constructor() {
        
         this.gameColor = 0;
@@ -109,41 +111,79 @@ export class Board{
 
     }
     addFigures(){
-            for(let i = 0; i<8; i++){
+
+        for(let i = 0; i<8; i++){
+                this.blackPieces.push(
+                        new Pawn(Color.Black, new Coordinates(i,6), "b-pawn-"+i)
+                ); 
+
+                this.drawFigure(this.blackPieces[i])
+                    this.whitePieces.push(
+                        new Pawn(Color.White, new Coordinates(i,1), "w-pawn-"+i)
+                ); 
+                this.drawFigure(this.whitePieces[i])
+            }
+            this.blackPieces.push(
+                   this.drawFigure(new Bishop(Color.Black, new Coordinates(2, 7), "b-bishop-0")),
+                    this.drawFigure(new Bishop(Color.Black, new Coordinates(5, 7), "b-bishop-1")));
+            this.blackPieces.push(
+                    this.drawFigure(new Knight(Color.Black, new Coordinates(1, 7), "b-knight-0")),
+                    this.drawFigure(new Knight(Color.Black, new Coordinates(6, 7), "b-knight-1")));
+            this.blackPieces.push(
+                    this.drawFigure(new Rok(Color.Black, new Coordinates(0, 7), "b-rock-0")),
+                    this.drawFigure(new Rok(Color.Black, new Coordinates(7, 7), "b-rock-1")));
+            this.blackPieces.push(this.drawFigure(new King(Color.Black, new Coordinates(4, 7),"b-king-0")));
+            this.blackPieces.push(this.drawFigure(new Queen(Color.Black, new Coordinates(3, 7), "b-queen-0")));
+
+          this.whitePieces.push(
+                    this.drawFigure(new Bishop(Color.White, new Coordinates(2, 0), "w-bishop-0")),
+                    this.drawFigure(new Bishop(Color.White, new Coordinates(5, 0), "w-bishop-1")));
+
+            this.whitePieces.push(
+                    this.drawFigure(new Knight(Color.White, new Coordinates(1, 0), "w-knight-0")),
+                    this.drawFigure(new Knight(Color.White, new Coordinates(6, 0), "w-knight-1")));
+            this.whitePieces.push(
+                    this.drawFigure(new Rok(Color.White, new Coordinates(0, 0), "w-rock-0")),
+                    this.drawFigure(new Rok(Color.White, new Coordinates(7, 0), "w-rock-1")));
+            this.whitePieces.push(this.drawFigure(new King(Color.White, new Coordinates(4, 0), "w-king-0")));
+            this.whitePieces.push(this.drawFigure(new Queen(Color.White, new Coordinates(3, 0),"w-queen-0")));
+
+
+            /*for(let i = 0; i<8; i++){
                 this.blackPieces.Pawns.push(
-                        new Pawn(Color.Black, new Coordinates(i,6), "pb"+i)
+                        new Pawn(Color.Black, new Coordinates(i,6), "b-pawn-"+i)
                 ); 
                 this.drawFigure(this.blackPieces.Pawns[i])
                     this.whitePieces.Pawns.push(
-                        new Pawn(Color.White, new Coordinates(i,1), "pw"+i)
+                        new Pawn(Color.White, new Coordinates(i,1), "w-pawn-"+i)
                 ); 
                 this.drawFigure(this.whitePieces.Pawns[i])
             }
             this.blackPieces.Bishops.push(
-                   this.drawFigure(new Bishop(Color.Black, new Coordinates(2, 7), "bb0")),
-                    this.drawFigure(new Bishop(Color.Black, new Coordinates(5, 7), "bb1")));
+                   this.drawFigure(new Bishop(Color.Black, new Coordinates(2, 7), "b-bishop-0")),
+                    this.drawFigure(new Bishop(Color.Black, new Coordinates(5, 7), "b-bishop-1")));
             this.blackPieces.Knights.push(
-                    this.drawFigure(new Knight(Color.Black, new Coordinates(1, 7), "kb0")),
-                    this.drawFigure(new Knight(Color.Black, new Coordinates(6, 7), "kb1")));
+                    this.drawFigure(new Knight(Color.Black, new Coordinates(1, 7), "b-knight-0")),
+                    this.drawFigure(new Knight(Color.Black, new Coordinates(6, 7), "b-knight-1")));
             this.blackPieces.Roks.push(
-                    this.drawFigure(new Rok(Color.Black, new Coordinates(0, 7), "rb0")),
-                    this.drawFigure(new Rok(Color.Black, new Coordinates(7, 7), "rb1")));
-            this.blackPieces.King =  this.drawFigure(new King(Color.Black, new Coordinates(4, 7),"Kb0"));
-            this.blackPieces.Queen = this.drawFigure(new Queen(Color.Black, new Coordinates(3, 7), "qb0"));
+                    this.drawFigure(new Rok(Color.Black, new Coordinates(0, 7), "b-rock-0")),
+                    this.drawFigure(new Rok(Color.Black, new Coordinates(7, 7), "b-rock-1")));
+            this.blackPieces.King =  this.drawFigure(new King(Color.Black, new Coordinates(4, 7),"b-king-0"));
+            this.blackPieces.Queen = this.drawFigure(new Queen(Color.Black, new Coordinates(3, 7), "b-queen-0"));
 
           this.whitePieces.Bishops.push(
-                    this.drawFigure(new Bishop(Color.White, new Coordinates(2, 0), "bw0")),
-                    this.drawFigure(new Bishop(Color.White, new Coordinates(5, 0), "bw1")));
+                    this.drawFigure(new Bishop(Color.White, new Coordinates(2, 0), "w-bishop-0")),
+                    this.drawFigure(new Bishop(Color.White, new Coordinates(5, 0), "w-bishop-1")));
 
             this.whitePieces.Knights.push(
-                    this.drawFigure(new Knight(Color.White, new Coordinates(1, 0), "kw0")),
-                    this.drawFigure(new Knight(Color.White, new Coordinates(6, 0), "kw1")));
+                    this.drawFigure(new Knight(Color.White, new Coordinates(1, 0), "w-knight-0")),
+                    this.drawFigure(new Knight(Color.White, new Coordinates(6, 0), "w-knight-1")));
             this.whitePieces.Roks.push(
-                    this.drawFigure(new Rok(Color.White, new Coordinates(0, 0), "rw0")),
-                    this.drawFigure(new Rok(Color.White, new Coordinates(7, 0), "rw1")));
-            this.whitePieces.King =  this.drawFigure(new King(Color.White, new Coordinates(4, 0), "Kw0"));
-            this.whitePieces.Queen = this.drawFigure(new Queen(Color.White, new Coordinates(3, 0),"qw0"));
-          
+                    this.drawFigure(new Rok(Color.White, new Coordinates(0, 0), "w-rock-0")),
+                    this.drawFigure(new Rok(Color.White, new Coordinates(7, 0), "w-rock-1")));
+            this.whitePieces.King =  this.drawFigure(new King(Color.White, new Coordinates(4, 0), "w-king-0"));
+            this.whitePieces.Queen = this.drawFigure(new Queen(Color.White, new Coordinates(3, 0),"w-queen-0"));
+          */
     
 
     }

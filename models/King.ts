@@ -6,10 +6,10 @@ export class King extends Piece {
     constructor(color: Color, coordinates: Coordinates, id:string) {
 
           if (color == Color.Black) {
-                super(coordinates, true, "king-black", id)
+                super(coordinates, true, "king-black", id, color)
             }
             else {
-                super(coordinates, true, "king-white", id)
+                super(coordinates, true, "king-white", id, color)
             }
     }
     getPossibleCells(initCoords: Coordinates): Array<Coordinates>{

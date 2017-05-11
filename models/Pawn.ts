@@ -8,10 +8,10 @@ export class Pawn extends Piece {
     constructor(color: Color, coordinates: Coordinates, id: string) {
        
           if (color == Color.Black) {
-                super(coordinates, true, "pawn-black", id)
+                super(coordinates, true, "pawn-black", id, color)
             }
             else {
-                super(coordinates, true, "pawn-white", id)
+                super(coordinates, true, "pawn-white", id, color)
             }
             this.madeFirstMove = false;
         this.id = id;

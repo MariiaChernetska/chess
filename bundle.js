@@ -74,10 +74,12 @@
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return Piece; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Color; });
 var Piece = (function () {
-    function Piece(position, onBoard, className) {
+    function Piece(position, onBoard, className, id, color) {
         this.onBoard = onBoard;
         this.position = position;
+        this.id = id;
         this.className = "piece " + className;
+        this.color = color;
     }
     Piece.prototype.leaveBoard = function () {
         this.onBoard = false;
@@ -118,7 +120,7 @@ var Coordinates = (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_Coordinates__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_Piece__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_Pawn__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dragdrop__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_Board__ = __webpack_require__(5);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Game; });
@@ -129,41 +131,45 @@ var Coordinates = (function () {
 var Game = (function () {
     function Game() {
         this.board = new __WEBPACK_IMPORTED_MODULE_3__models_Board__["a" /* Board */]();
-        this.drag = new __WEBPACK_IMPORTED_MODULE_2__dragdrop__["a" /* DragnDrop */](this.getElement, this.removeHighlighting);
+        this.drag = new __WEBPACK_IMPORTED_MODULE_2__dragdrop__["a" /* DragnDrop */](this.getElement, this.finishMove);
         //console.log(this.board.blackPieces.King.getPossibleCells(this.board.blackPieces.King.position))
         Game.self = this;
+        this.getElement = this.getElement.bind(this);
     }
     Game.prototype.getElement = function (elem) {
-        if (elem.elem.className.indexOf("pawn") != -1) {
-            Game.self.pawnAction(elem);
+        Game.self.resolveElement(elem.id, true);
+    };
+    Game.prototype.resolveElement = function (id, startMove) {
+        var obj = {};
+        if (id.charAt(0) == "b") {
+            var buf = this.board.blackPieces;
+            for (var i = 0; i < buf.length; i++) {
+                if (buf[i].id == id) {
+                    obj = buf[i];
+                    break;
+                }
+            }
+        }
+        if (startMove) {
+            if (obj instanceof __WEBPACK_IMPORTED_MODULE_1__models_Pawn__["a" /* Pawn */])
+                this.pawnAction(obj);
+        }
+        return obj;
+    };
+    Game.prototype.finishMove = function (elem, coords) {
+        var obj = Game.self.resolveElement(elem.id, false);
+        obj.position = new __WEBPACK_IMPORTED_MODULE_0__models_Coordinates__["a" /* Coordinates */](coords.x, coords.y);
+        if (obj instanceof __WEBPACK_IMPORTED_MODULE_1__models_Pawn__["a" /* Pawn */])
+            obj.makeFirstMove();
+        var cells = document.getElementsByClassName("cell");
+        for (var i = 0; i < cells.length; i++) {
+            cells[i].className = cells[i].className.replace(" possibleCell droppable", "");
         }
     };
-    Game.prototype.pawnAction = function (elem) {
-        var pawn = {};
+    Game.prototype.pawnAction = function (pawn) {
         var possibleMoves = [];
-        var initCoords = new __WEBPACK_IMPORTED_MODULE_0__models_Coordinates__["a" /* Coordinates */](elem.elem.dataset.coords.charAt(1), elem.elem.dataset.coords.charAt(0));
-        if (elem.elem.className.indexOf("black") != -1) {
-            this.board.blackPieces.Pawns.forEach(function (element) {
-                if (elem.elem.dataset.id == element.id) {
-                    pawn = element;
-                }
-            });
-            pawn.position = initCoords;
-            possibleMoves = pawn.getPossibleCells(pawn.position, __WEBPACK_IMPORTED_MODULE_1__models_Piece__["a" /* Color */].Black);
-            this.hightlightCells(possibleMoves);
-            console.log(possibleMoves);
-        }
-        else {
-            this.board.whitePieces.Pawns.forEach(function (element) {
-                if (elem.elem.dataset.id == element.id) {
-                    pawn = element;
-                }
-            });
-            pawn.position = initCoords;
-            possibleMoves = pawn.getPossibleCells(pawn.position, __WEBPACK_IMPORTED_MODULE_1__models_Piece__["a" /* Color */].White);
-            this.hightlightCells(possibleMoves);
-            console.log(possibleMoves);
-        }
+        possibleMoves = pawn.getPossibleCells(pawn.position, pawn.color);
+        this.hightlightCells(possibleMoves);
     };
     Game.prototype.hightlightCells = function (cellCoords) {
         cellCoords.forEach(function (element) {
@@ -171,12 +177,6 @@ var Game = (function () {
             var cell = document.getElementById(buf);
             cell.className += " possibleCell droppable";
         });
-    };
-    Game.prototype.removeHighlighting = function () {
-        var cells = document.getElementsByClassName("cell");
-        for (var i = 0; i < cells.length; i++) {
-            cells[i].className = cells[i].className.replace(" possibleCell droppable", "");
-        }
     };
     return Game;
 }());
@@ -215,13 +215,13 @@ var __extends = (this && this.__extends) || (function () {
 
 var Bishop = (function (_super) {
     __extends(Bishop, _super);
-    function Bishop(color, coordinates) {
+    function Bishop(color, coordinates, id) {
         var _this = this;
         if (color == __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* Color */].Black) {
-            _this = _super.call(this, coordinates, true, "bishop-black") || this;
+            _this = _super.call(this, coordinates, true, "bishop-black", id, color) || this;
         }
         else {
-            _this = _super.call(this, coordinates, true, "bishop-white") || this;
+            _this = _super.call(this, coordinates, true, "bishop-white", id, color) || this;
         }
         return _this;
     }
@@ -269,8 +269,10 @@ var Board = (function () {
         this.reverseCells = [];
         this.board = document.getElementById('board');
         this.reverseBoard = document.getElementById('reverse-board');
-        this.whitePieces = new Side();
-        this.blackPieces = new Side();
+        /* whitePieces: Side = new Side();
+         blackPieces: Side = new Side();*/
+        this.whitePieces = [];
+        this.blackPieces = [];
         this.gameColor = 0;
         if (this.gameColor == __WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].Black) {
             this.drawBoard(this.board);
@@ -338,21 +340,56 @@ var Board = (function () {
     };
     Board.prototype.addFigures = function () {
         for (var i = 0; i < 8; i++) {
-            this.blackPieces.Pawns.push(new __WEBPACK_IMPORTED_MODULE_4__Pawn__["a" /* Pawn */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].Black, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](i, 6), "pb" + i));
-            this.drawFigure(this.blackPieces.Pawns[i]);
-            this.whitePieces.Pawns.push(new __WEBPACK_IMPORTED_MODULE_4__Pawn__["a" /* Pawn */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](i, 1), "pw" + i));
-            this.drawFigure(this.whitePieces.Pawns[i]);
+            this.blackPieces.push(new __WEBPACK_IMPORTED_MODULE_4__Pawn__["a" /* Pawn */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].Black, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](i, 6), "b-pawn-" + i));
+            this.drawFigure(this.blackPieces[i]);
+            this.whitePieces.push(new __WEBPACK_IMPORTED_MODULE_4__Pawn__["a" /* Pawn */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](i, 1), "w-pawn-" + i));
+            this.drawFigure(this.whitePieces[i]);
         }
-        this.blackPieces.Bishops.push(this.drawFigure(new __WEBPACK_IMPORTED_MODULE_5__Bishop__["a" /* Bishop */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].Black, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](2, 7))), this.drawFigure(new __WEBPACK_IMPORTED_MODULE_5__Bishop__["a" /* Bishop */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].Black, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](5, 7))));
-        this.blackPieces.Knights.push(this.drawFigure(new __WEBPACK_IMPORTED_MODULE_6__Knight__["a" /* Knight */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].Black, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](1, 7))), this.drawFigure(new __WEBPACK_IMPORTED_MODULE_6__Knight__["a" /* Knight */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].Black, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](6, 7))));
-        this.blackPieces.Roks.push(this.drawFigure(new __WEBPACK_IMPORTED_MODULE_7__Rok__["a" /* Rok */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].Black, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](0, 7))), this.drawFigure(new __WEBPACK_IMPORTED_MODULE_7__Rok__["a" /* Rok */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].Black, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](7, 7))));
-        this.blackPieces.King = this.drawFigure(new __WEBPACK_IMPORTED_MODULE_2__King__["a" /* King */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].Black, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](4, 7)));
-        this.blackPieces.Queen = this.drawFigure(new __WEBPACK_IMPORTED_MODULE_3__Queen__["a" /* Queen */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].Black, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](3, 7)));
-        this.whitePieces.Bishops.push(this.drawFigure(new __WEBPACK_IMPORTED_MODULE_5__Bishop__["a" /* Bishop */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](2, 0))), this.drawFigure(new __WEBPACK_IMPORTED_MODULE_5__Bishop__["a" /* Bishop */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](5, 0))));
-        this.whitePieces.Knights.push(this.drawFigure(new __WEBPACK_IMPORTED_MODULE_6__Knight__["a" /* Knight */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](1, 0))), this.drawFigure(new __WEBPACK_IMPORTED_MODULE_6__Knight__["a" /* Knight */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](6, 0))));
-        this.whitePieces.Roks.push(this.drawFigure(new __WEBPACK_IMPORTED_MODULE_7__Rok__["a" /* Rok */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](0, 0))), this.drawFigure(new __WEBPACK_IMPORTED_MODULE_7__Rok__["a" /* Rok */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](7, 0))));
-        this.whitePieces.King = this.drawFigure(new __WEBPACK_IMPORTED_MODULE_2__King__["a" /* King */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](4, 0)));
-        this.whitePieces.Queen = this.drawFigure(new __WEBPACK_IMPORTED_MODULE_3__Queen__["a" /* Queen */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](3, 0)));
+        this.blackPieces.push(this.drawFigure(new __WEBPACK_IMPORTED_MODULE_5__Bishop__["a" /* Bishop */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].Black, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](2, 7), "b-bishop-0")), this.drawFigure(new __WEBPACK_IMPORTED_MODULE_5__Bishop__["a" /* Bishop */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].Black, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](5, 7), "b-bishop-1")));
+        this.blackPieces.push(this.drawFigure(new __WEBPACK_IMPORTED_MODULE_6__Knight__["a" /* Knight */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].Black, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](1, 7), "b-knight-0")), this.drawFigure(new __WEBPACK_IMPORTED_MODULE_6__Knight__["a" /* Knight */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].Black, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](6, 7), "b-knight-1")));
+        this.blackPieces.push(this.drawFigure(new __WEBPACK_IMPORTED_MODULE_7__Rok__["a" /* Rok */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].Black, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](0, 7), "b-rock-0")), this.drawFigure(new __WEBPACK_IMPORTED_MODULE_7__Rok__["a" /* Rok */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].Black, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](7, 7), "b-rock-1")));
+        this.blackPieces.push(this.drawFigure(new __WEBPACK_IMPORTED_MODULE_2__King__["a" /* King */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].Black, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](4, 7), "b-king-0")));
+        this.blackPieces.push(this.drawFigure(new __WEBPACK_IMPORTED_MODULE_3__Queen__["a" /* Queen */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].Black, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](3, 7), "b-queen-0")));
+        this.whitePieces.push(this.drawFigure(new __WEBPACK_IMPORTED_MODULE_5__Bishop__["a" /* Bishop */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](2, 0), "w-bishop-0")), this.drawFigure(new __WEBPACK_IMPORTED_MODULE_5__Bishop__["a" /* Bishop */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](5, 0), "w-bishop-1")));
+        this.whitePieces.push(this.drawFigure(new __WEBPACK_IMPORTED_MODULE_6__Knight__["a" /* Knight */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](1, 0), "w-knight-0")), this.drawFigure(new __WEBPACK_IMPORTED_MODULE_6__Knight__["a" /* Knight */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](6, 0), "w-knight-1")));
+        this.whitePieces.push(this.drawFigure(new __WEBPACK_IMPORTED_MODULE_7__Rok__["a" /* Rok */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](0, 0), "w-rock-0")), this.drawFigure(new __WEBPACK_IMPORTED_MODULE_7__Rok__["a" /* Rok */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](7, 0), "w-rock-1")));
+        this.whitePieces.push(this.drawFigure(new __WEBPACK_IMPORTED_MODULE_2__King__["a" /* King */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](4, 0), "w-king-0")));
+        this.whitePieces.push(this.drawFigure(new __WEBPACK_IMPORTED_MODULE_3__Queen__["a" /* Queen */](__WEBPACK_IMPORTED_MODULE_8__Piece__["a" /* Color */].White, new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](3, 0), "w-queen-0")));
+        /*for(let i = 0; i<8; i++){
+            this.blackPieces.Pawns.push(
+                    new Pawn(Color.Black, new Coordinates(i,6), "b-pawn-"+i)
+            );
+            this.drawFigure(this.blackPieces.Pawns[i])
+                this.whitePieces.Pawns.push(
+                    new Pawn(Color.White, new Coordinates(i,1), "w-pawn-"+i)
+            );
+            this.drawFigure(this.whitePieces.Pawns[i])
+        }
+        this.blackPieces.Bishops.push(
+               this.drawFigure(new Bishop(Color.Black, new Coordinates(2, 7), "b-bishop-0")),
+                this.drawFigure(new Bishop(Color.Black, new Coordinates(5, 7), "b-bishop-1")));
+        this.blackPieces.Knights.push(
+                this.drawFigure(new Knight(Color.Black, new Coordinates(1, 7), "b-knight-0")),
+                this.drawFigure(new Knight(Color.Black, new Coordinates(6, 7), "b-knight-1")));
+        this.blackPieces.Roks.push(
+                this.drawFigure(new Rok(Color.Black, new Coordinates(0, 7), "b-rock-0")),
+                this.drawFigure(new Rok(Color.Black, new Coordinates(7, 7), "b-rock-1")));
+        this.blackPieces.King =  this.drawFigure(new King(Color.Black, new Coordinates(4, 7),"b-king-0"));
+        this.blackPieces.Queen = this.drawFigure(new Queen(Color.Black, new Coordinates(3, 7), "b-queen-0"));
+
+      this.whitePieces.Bishops.push(
+                this.drawFigure(new Bishop(Color.White, new Coordinates(2, 0), "w-bishop-0")),
+                this.drawFigure(new Bishop(Color.White, new Coordinates(5, 0), "w-bishop-1")));
+
+        this.whitePieces.Knights.push(
+                this.drawFigure(new Knight(Color.White, new Coordinates(1, 0), "w-knight-0")),
+                this.drawFigure(new Knight(Color.White, new Coordinates(6, 0), "w-knight-1")));
+        this.whitePieces.Roks.push(
+                this.drawFigure(new Rok(Color.White, new Coordinates(0, 0), "w-rock-0")),
+                this.drawFigure(new Rok(Color.White, new Coordinates(7, 0), "w-rock-1")));
+        this.whitePieces.King =  this.drawFigure(new King(Color.White, new Coordinates(4, 0), "w-king-0"));
+        this.whitePieces.Queen = this.drawFigure(new Queen(Color.White, new Coordinates(3, 0),"w-queen-0"));
+      */
     };
     Board.prototype.drawFigure = function (figure) {
         var targetCell = figure.position.y.toString() + figure.position.x.toString();
@@ -360,7 +397,7 @@ var Board = (function () {
         var piece = document.createElement("div");
         piece.className = figure.className;
         piece.dataset.coords = targetCell;
-        piece.dataset.id = figure.id;
+        piece.id = figure.id;
         cell.appendChild(piece);
         return figure;
     };
@@ -415,13 +452,13 @@ var __extends = (this && this.__extends) || (function () {
 
 var King = (function (_super) {
     __extends(King, _super);
-    function King(color, coordinates) {
+    function King(color, coordinates, id) {
         var _this = this;
         if (color == __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* Color */].Black) {
-            _this = _super.call(this, coordinates, true, "king-black") || this;
+            _this = _super.call(this, coordinates, true, "king-black", id, color) || this;
         }
         else {
-            _this = _super.call(this, coordinates, true, "king-white") || this;
+            _this = _super.call(this, coordinates, true, "king-white", id, color) || this;
         }
         return _this;
     }
@@ -466,13 +503,13 @@ var __extends = (this && this.__extends) || (function () {
 
 var Knight = (function (_super) {
     __extends(Knight, _super);
-    function Knight(color, coordinates) {
+    function Knight(color, coordinates, id) {
         var _this = this;
         if (color == __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* Color */].Black) {
-            _this = _super.call(this, coordinates, true, "knight-black") || this;
+            _this = _super.call(this, coordinates, true, "knight-black", id, color) || this;
         }
         else {
-            _this = _super.call(this, coordinates, true, "knight-white") || this;
+            _this = _super.call(this, coordinates, true, "knight-white", id, color) || this;
         }
         return _this;
     }
@@ -507,15 +544,18 @@ var Pawn = (function (_super) {
     function Pawn(color, coordinates, id) {
         var _this = this;
         if (color == __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* Color */].Black) {
-            _this = _super.call(this, coordinates, true, "pawn-black") || this;
+            _this = _super.call(this, coordinates, true, "pawn-black", id, color) || this;
         }
         else {
-            _this = _super.call(this, coordinates, true, "pawn-white") || this;
+            _this = _super.call(this, coordinates, true, "pawn-white", id, color) || this;
         }
         _this.madeFirstMove = false;
         _this.id = id;
         return _this;
     }
+    Pawn.prototype.makeFirstMove = function () {
+        this.madeFirstMove = true;
+    };
     Pawn.prototype.getPossibleCells = function (initCoords, figureColor, beat) {
         var newCoords = [];
         if (figureColor == __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* Color */].Black) {
@@ -576,13 +616,13 @@ var __extends = (this && this.__extends) || (function () {
 
 var Queen = (function (_super) {
     __extends(Queen, _super);
-    function Queen(color, coordinates) {
+    function Queen(color, coordinates, id) {
         var _this = this;
         if (color == __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* Color */].Black) {
-            _this = _super.call(this, coordinates, true, "queen-black") || this;
+            _this = _super.call(this, coordinates, true, "queen-black", id, color) || this;
         }
         else {
-            _this = _super.call(this, coordinates, true, "queen-white") || this;
+            _this = _super.call(this, coordinates, true, "queen-white", id, color) || this;
         }
         return _this;
     }
@@ -612,13 +652,13 @@ var __extends = (this && this.__extends) || (function () {
 
 var Rok = (function (_super) {
     __extends(Rok, _super);
-    function Rok(color, coordinates) {
+    function Rok(color, coordinates, id) {
         var _this = this;
         if (color == __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* Color */].Black) {
-            _this = _super.call(this, coordinates, true, "rok-black") || this;
+            _this = _super.call(this, coordinates, true, "rok-black", id, color) || this;
         }
         else {
-            _this = _super.call(this, coordinates, true, "rok-white") || this;
+            _this = _super.call(this, coordinates, true, "rok-white", id, color) || this;
         }
         return _this;
     }
@@ -639,13 +679,13 @@ var DragElement = (function () {
     return DragElement;
 }());
 var DragnDrop = (function () {
-    function DragnDrop(elementGetter, hightLightRemover) {
+    function DragnDrop(elementGetter, finishMove) {
         this.element = new DragElement();
         document.onmousedown = this.mouseDown.bind(this);
         document.onmousemove = this.mouseMove.bind(this);
         document.onmouseup = this.mouseUp.bind(this);
         this.elementGetter = elementGetter;
-        this.hightLightRemover = hightLightRemover;
+        this.finishMove = finishMove;
     }
     DragnDrop.prototype.mouseDown = function (e) {
         if (e.which != 1)
@@ -656,7 +696,7 @@ var DragnDrop = (function () {
         this.element.elem = elem;
         this.element.downX = e.pageX;
         this.element.downY = e.pageY;
-        this.elementGetter(this.element);
+        this.elementGetter(this.element.elem);
         return false;
     };
     DragnDrop.prototype.mouseMove = function (e) {
@@ -702,10 +742,9 @@ var DragnDrop = (function () {
             this.finishDrag(e);
         }
         if (this.element.elem) {
-            this.element.elem.dataset.coords = this.element.elem.parentElement.id;
+            this.finishMove(this.element.elem, { x: this.element.elem.parentElement.id.charAt(1), y: this.element.elem.parentElement.id.charAt(0) });
         }
         this.element = new DragElement();
-        this.hightLightRemover();
     };
     DragnDrop.prototype.finishDrag = function (e) {
         var dropElem = this.findDroppable(e);

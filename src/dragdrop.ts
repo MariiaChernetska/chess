@@ -1,3 +1,4 @@
+
 class DragElement{
     elem: any;
     clone: any;
@@ -9,13 +10,13 @@ class DragElement{
 export class DragnDrop{
     element: DragElement = new DragElement();
     elementGetter: Function;
-    hightLightRemover: Function;
-    constructor(elementGetter: any, hightLightRemover:any){
+    finishMove: Function;
+    constructor(elementGetter: any, finishMove:any){
         document.onmousedown = this.mouseDown.bind(this);
         document.onmousemove = this.mouseMove.bind(this);
         document.onmouseup = this.mouseUp.bind(this);
         this.elementGetter = elementGetter;
-        this.hightLightRemover = hightLightRemover;
+        this.finishMove = finishMove;
     }
     mouseDown(e:any){
         if (e.which != 1) return;
@@ -74,11 +75,11 @@ export class DragnDrop{
       this.finishDrag(e);
     }
     if(this.element.elem){
-      this.element.elem.dataset.coords = this.element.elem.parentElement.id;
+         this.finishMove(this.element.elem, {x:this.element.elem.parentElement.id.charAt(1), y: this.element.elem.parentElement.id.charAt(0)});
+
     }
     
     this.element = new DragElement();
-    this.hightLightRemover();
     
   }
   finishDrag(e:any) {

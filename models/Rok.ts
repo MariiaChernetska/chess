@@ -6,10 +6,10 @@ export class Rok extends Piece {
     constructor(color: Color, coordinates: Coordinates, id:string) {
 
           if (color == Color.Black) {
-                super(coordinates, true, "rok-black", id)
+                super(coordinates, true, "rok-black", id, color)
             }
             else {
-                super(coordinates, true, "rok-white", id)
+                super(coordinates, true, "rok-white", id, color)
             }
     }
 }

@@ -6,10 +6,10 @@ export class Queen extends Piece {
     constructor(color: Color, coordinates: Coordinates, id:string) {
 
           if (color == Color.Black) {
-                super(coordinates, true, "queen-black", id)
+                super(coordinates, true, "queen-black", id, color)
             }
             else {
-                super(coordinates, true, "queen-white", id)
+                super(coordinates, true, "queen-white", id, color)
             }
     }
 }

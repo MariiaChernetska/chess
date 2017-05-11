@@ -13,51 +13,47 @@ import {Board} from '../models/Board'
 
 export class Game{
     board: Board = new Board();
-    drag: DragnDrop = new DragnDrop(this.getElement, this.removeHighlighting);
+    drag: DragnDrop = new DragnDrop(this.getElement, this.finishMove);
     static self: any;
     figure: any;
     constructor(){
         //console.log(this.board.blackPieces.King.getPossibleCells(this.board.blackPieces.King.position))
        Game.self = this;
+       this.getElement = this.getElement.bind(this);
     }
     getElement(elem:any){
-         if(elem.className.indexOf("pawn") != -1){
-           // Game.self.pawnAction(elem)
-         }
-        
-        
+        Game.self.resolveElement(elem.id, true);
     }
-    
-    pawnAction(elem:any){
-       
-            let pawn: any = {};
-            let possibleMoves = [];
-            let initCoords = new Coordinates(elem.elem.dataset.coords.charAt(1), elem.elem.dataset.coords.charAt(0));
-            if(elem.elem.className.indexOf("black") != -1){
-                this.board.blackPieces.Pawns.forEach(element=>{
-                    if(elem.elem.dataset.id == element.id){
-                        pawn = element;
-                    }
-                });
-                pawn.position = initCoords;
-                possibleMoves = pawn.getPossibleCells(pawn.position, Color.Black);
-                this.hightlightCells(possibleMoves);
-                console.log(possibleMoves)
-            }
-            else{
-                this.board.whitePieces.Pawns.forEach(element=>{
-                    if(elem.elem.dataset.id == element.id){
-                        pawn = element;
-                    }
-                })
-                pawn.position = initCoords;
-                possibleMoves = pawn.getPossibleCells(pawn.position, Color.White);
-                this.hightlightCells(possibleMoves);
-                console.log(possibleMoves)
-            }
-           
-      
-       
+    resolveElement(id:any, startMove: boolean){
+
+        let obj = {};
+       if(id.charAt(0)=="b"){
+           let buf = this.board.blackPieces;
+           for(let i=0;i<buf.length; i++){
+                if(buf[i].id == id) {
+                    obj = buf[i]; 
+                    break;
+                }
+           }
+       }
+       if(startMove){
+            if(obj instanceof Pawn) this.pawnAction(<Pawn>obj)
+       }
+       return obj;
+    }
+    finishMove(elem:any, coords: {x:number, y: number}){
+        let obj = Game.self.resolveElement(elem.id, false);
+        obj.position = new Coordinates(coords.x, coords.y); 
+        if(obj instanceof Pawn) obj.makeFirstMove();
+        let cells = document.getElementsByClassName("cell");
+        for(let i=0; i<cells.length;i++){
+            cells[i].className = cells[i].className.replace(" possibleCell droppable", "");
+        }
+    }
+    pawnAction(pawn:Pawn){
+        let possibleMoves = [];
+        possibleMoves = pawn.getPossibleCells(pawn.position, pawn.color);
+        this.hightlightCells(possibleMoves);
     }
     hightlightCells(cellCoords: Array<Coordinates>){
         cellCoords.forEach(element=>{
@@ -66,12 +62,5 @@ export class Game{
            cell.className += " possibleCell droppable";
         })
     }
-    removeHighlighting(){
-        let cells = document.getElementsByClassName("cell");
-        for(let i=0; i<cells.length;i++){
-            cells[i].className = cells[i].className.replace(" possibleCell droppable", "");
-
-        }
-        
-    }
+    
 }
