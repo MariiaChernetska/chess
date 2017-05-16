@@ -25,19 +25,20 @@ export class Game{
         Game.self.resolveElement(elem.id, true);
     }
     resolveElement(id:any, startMove: boolean){
-
+        let buf = [];
         let obj = {};
-       if(id.charAt(0)=="b"){
-           let buf = this.board.blackPieces;
-           for(let i=0;i<buf.length; i++){
+        id.charAt(0)=="b"?buf = this.board.blackPieces:buf = this.board.whitePieces;
+       
+       for(let i=0;i<buf.length; i++){
                 if(buf[i].id == id) {
                     obj = buf[i]; 
                     break;
-                }
+                }   
            }
-       }
        if(startMove){
             if(obj instanceof Pawn) this.pawnAction(<Pawn>obj)
+            if(obj instanceof Rok) this.rokAction(<Rok>obj)
+            if(obj instanceof Knight) this.knightAction(<Knight>obj)
        }
        return obj;
     }
@@ -53,6 +54,16 @@ export class Game{
     pawnAction(pawn:Pawn){
         let possibleMoves = [];
         possibleMoves = pawn.getPossibleCells(pawn.position, pawn.color);
+        this.hightlightCells(possibleMoves);
+    }
+    rokAction(rok:Rok){
+        let possibleMoves = [];
+        possibleMoves = rok.getPossibleCells(rok.position, rok.color);
+        this.hightlightCells(possibleMoves);
+    }
+    knightAction(knight:Knight){
+        let possibleMoves = [];
+        possibleMoves = knight.getPossibleCells(knight.position, knight.color);
         this.hightlightCells(possibleMoves);
     }
     hightlightCells(cellCoords: Array<Coordinates>){

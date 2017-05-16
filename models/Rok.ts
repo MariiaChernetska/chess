@@ -12,4 +12,20 @@ export class Rok extends Piece {
                 super(coordinates, true, "rok-white", id, color)
             }
     }
+    getPossibleCells(initCoords: Coordinates, figureColor: Color, beat?:Array<Coordinates>): Array<Coordinates>{
+        let newCoords: Array<Coordinates> = [];
+        
+            for(let i=0; i<8; i++){
+                if(initCoords.y==i) continue;
+                newCoords.push(new Coordinates(initCoords.x,i));
+            }
+            for (let i=0; i<8; i++){
+                if(initCoords.x==i) continue;
+                newCoords.push(new Coordinates(i, initCoords.y));
+            }
+            
+        
+        
+        return newCoords;
+    }
 }
