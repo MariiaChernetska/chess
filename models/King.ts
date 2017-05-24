@@ -12,7 +12,7 @@ export class King extends Piece {
                 super(coordinates, true, "king-white", id, color)
             }
     }
-    getPossibleCells(initCoords: Coordinates): Array<Coordinates>{
+    getPossibleCells(initCoords: Coordinates, figureColor: Color, beat?:Array<Coordinates>): Array<Coordinates>{
         let newCoords = [];
         for(let i = -1; i<2; i++){
             for(let j = -1; j<2; j++){

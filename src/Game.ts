@@ -39,6 +39,9 @@ export class Game{
             if(obj instanceof Pawn) this.pawnAction(<Pawn>obj)
             if(obj instanceof Rok) this.rokAction(<Rok>obj)
             if(obj instanceof Knight) this.knightAction(<Knight>obj)
+            if(obj instanceof Bishop) this.bishopAction(<Bishop>obj)
+            if(obj instanceof Queen) this.queenAction(<Queen>obj)
+            if(obj instanceof King) this.kingAction(<King>obj)
        }
        return obj;
     }
@@ -47,8 +50,9 @@ export class Game{
         obj.position = new Coordinates(coords.x, coords.y); 
         if(obj instanceof Pawn) obj.makeFirstMove();
         let cells = document.getElementsByClassName("cell");
-        for(let i=0; i<cells.length;i++){
-            cells[i].className = cells[i].className.replace(" possibleCell droppable", "");
+        for(let i=0; i<cells.length; i++){
+            cells[i].classList.remove("possibleCell", "droppable");
+            
         }
     }
     pawnAction(pawn:Pawn){
@@ -66,11 +70,30 @@ export class Game{
         possibleMoves = knight.getPossibleCells(knight.position, knight.color);
         this.hightlightCells(possibleMoves);
     }
+    bishopAction(bishop:Bishop){
+        let possibleMoves = [];
+        possibleMoves = bishop.getPossibleCells(bishop.position, bishop.color);
+        this.hightlightCells(possibleMoves);
+       
+    }
+    queenAction(queen:Queen){
+        let possibleMoves = [];
+        possibleMoves = queen.getPossibleCells(queen.position, queen.color);
+        this.hightlightCells(possibleMoves);
+       
+    }
+     kingAction(king:King){
+        let possibleMoves = [];
+        possibleMoves = king.getPossibleCells(king.position, king.color);
+        this.hightlightCells(possibleMoves);
+       
+    }
     hightlightCells(cellCoords: Array<Coordinates>){
         cellCoords.forEach(element=>{
             let buf = element.y.toString()+element.x.toString();
            let cell = document.getElementById(buf);
-           cell.className += " possibleCell droppable";
+        
+           cell.classList.add("possibleCell", "droppable");
         })
     }
     

@@ -23,17 +23,7 @@ export class Knight extends Piece {
                 newCoords.push(c);
             }
         }
-       /* newCoords.push(new Coordinates(+initCoords.x+1, +initCoords.y+2));
-        newCoords.push(new Coordinates(+initCoords.x+2, +initCoords.y+1));
-        newCoords.push(new Coordinates(+initCoords.x+2, +initCoords.y-1));
-
-        newCoords.push(new Coordinates(+initCoords.x+1, +initCoords.y-2));
-        newCoords.push(new Coordinates(+initCoords.x-1, +initCoords.y-2));
-        newCoords.push(new Coordinates(+initCoords.x-2, +initCoords.y-1));
     
-        newCoords.push(new Coordinates(+initCoords.x-2, +initCoords.y+1));
-        newCoords.push(new Coordinates(+initCoords.x-1, +initCoords.y+2));*/
-        console.log(newCoords)
         return newCoords;
     }
 }
