@@ -31,11 +31,11 @@ export class Pawn extends Piece {
             newCoords.push(c1, c2);
            
         }
-        if(beat){
+        /*if(beat){
             beat.forEach(element => {
                 newCoords.push(new Coordinates(element.x, element.y));
             });
-        }
+        }*/
         
     }
      else{
@@ -48,12 +48,12 @@ export class Pawn extends Piece {
             newCoords.push(c1, c2);
            
         }
-        if(beat){
+        /*if(beat){
             beat.forEach(element => {
                 newCoords.push(new Coordinates(element.x, element.y));
             });
         }
-        
+        */ 
         }
         
         return newCoords;

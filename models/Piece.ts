@@ -1,5 +1,14 @@
 ﻿import {Coordinates} from './Coordinates'
-export class Piece {
+import {Board} from './Board'
+export interface IPiece{
+    position: Coordinates;
+    onBoard: boolean;
+    color: Color;
+    id: string;
+    className: string;
+    getPossibleCells?:(initCoords: Coordinates, figureColor: Color, board: Board)=>Array<Coordinates>
+}
+export class Piece implements IPiece{
     position: Coordinates;
     onBoard: boolean;
     color: Color;
@@ -12,7 +21,7 @@ export class Piece {
         this.className = "piece "+className;
         this.color = color;
     }
-
+    
     leaveBoard() {
         this.onBoard = false;
     }

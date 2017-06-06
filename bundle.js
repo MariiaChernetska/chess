@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ 	return __webpack_require__(__webpack_require__.s = 9);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -116,310 +116,6 @@ var Coordinates = (function () {
 
 /***/ }),
 /* 2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Knight; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Piece__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Coordinates__ = __webpack_require__(1);
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-
-
-
-var Knight = (function (_super) {
-    __extends(Knight, _super);
-    function Knight(color, coordinates, id) {
-        var _this = this;
-        if (color == __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* Color */].Black) {
-            _this = _super.call(this, coordinates, true, "knight-black", id, color) || this;
-        }
-        else {
-            _this = _super.call(this, coordinates, true, "knight-white", id, color) || this;
-        }
-        return _this;
-    }
-    Knight.prototype.getPossibleCells = function (initCoords, figureColor, beat) {
-        var newCoords = [];
-        var moves = [+1, +2, +2, +1, +2, -1, +1, -2, -1, -2, -1, -2, -2, -1, -2, +1, -1, +2];
-        for (var i = 0; i < moves.length; i += 2) {
-            var buf1 = moves[i];
-            var buf2 = moves[i + 1];
-            var c = new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](+initCoords.x + buf1, +initCoords.y + buf2);
-            if (c.x != undefined) {
-                newCoords.push(c);
-            }
-        }
-        return newCoords;
-    };
-    return Knight;
-}(__WEBPACK_IMPORTED_MODULE_0__Piece__["b" /* Piece */]));
-
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Pawn; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Piece__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Coordinates__ = __webpack_require__(1);
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-
-
-
-var Pawn = (function (_super) {
-    __extends(Pawn, _super);
-    function Pawn(color, coordinates, id) {
-        var _this = this;
-        if (color == __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* Color */].Black) {
-            _this = _super.call(this, coordinates, true, "pawn-black", id, color) || this;
-        }
-        else {
-            _this = _super.call(this, coordinates, true, "pawn-white", id, color) || this;
-        }
-        _this.madeFirstMove = false;
-        _this.id = id;
-        return _this;
-    }
-    Pawn.prototype.makeFirstMove = function () {
-        this.madeFirstMove = true;
-    };
-    Pawn.prototype.getPossibleCells = function (initCoords, figureColor, beat) {
-        var newCoords = [];
-        if (figureColor == __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* Color */].Black) {
-            if (this.madeFirstMove) {
-                newCoords.push(new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](initCoords.x, initCoords.y - 1));
-            }
-            else {
-                var c1 = new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](initCoords.x, initCoords.y - 1);
-                var c2 = new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](initCoords.x, initCoords.y - 2);
-                newCoords.push(c1, c2);
-            }
-            if (beat) {
-                beat.forEach(function (element) {
-                    newCoords.push(new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](element.x, element.y));
-                });
-            }
-        }
-        else {
-            if (this.madeFirstMove) {
-                newCoords.push(new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](+initCoords.x, +initCoords.y + 1));
-            }
-            else {
-                var c1 = new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](+initCoords.x, +initCoords.y + 1);
-                var c2 = new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](+initCoords.x, +initCoords.y + 2);
-                newCoords.push(c1, c2);
-            }
-            if (beat) {
-                beat.forEach(function (element) {
-                    newCoords.push(new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](element.x, element.y));
-                });
-            }
-        }
-        return newCoords;
-    };
-    return Pawn;
-}(__WEBPACK_IMPORTED_MODULE_0__Piece__["b" /* Piece */]));
-
-
-
-/***/ }),
-/* 4 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Rok; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Piece__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Coordinates__ = __webpack_require__(1);
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-
-
-
-var Rok = (function (_super) {
-    __extends(Rok, _super);
-    function Rok(color, coordinates, id) {
-        var _this = this;
-        if (color == __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* Color */].Black) {
-            _this = _super.call(this, coordinates, true, "rok-black", id, color) || this;
-        }
-        else {
-            _this = _super.call(this, coordinates, true, "rok-white", id, color) || this;
-        }
-        return _this;
-    }
-    Rok.prototype.getPossibleCells = function (initCoords, figureColor, beat) {
-        var newCoords = [];
-        for (var i = 0; i < 8; i++) {
-            if (initCoords.y == i)
-                continue;
-            newCoords.push(new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](initCoords.x, i));
-        }
-        for (var i = 0; i < 8; i++) {
-            if (initCoords.x == i)
-                continue;
-            newCoords.push(new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](i, initCoords.y));
-        }
-        return newCoords;
-    };
-    return Rok;
-}(__WEBPACK_IMPORTED_MODULE_0__Piece__["b" /* Piece */]));
-
-
-
-/***/ }),
-/* 5 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Game; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_Coordinates__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_King__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_Queen__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_Pawn__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__models_Bishop__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__models_Knight__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__models_Rok__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__dragdrop__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__models_Board__ = __webpack_require__(8);
-
-
-
-
-
-
-
-
-
-var Game = (function () {
-    function Game() {
-        this.board = new __WEBPACK_IMPORTED_MODULE_8__models_Board__["a" /* Board */]();
-        this.drag = new __WEBPACK_IMPORTED_MODULE_7__dragdrop__["a" /* DragnDrop */](this.getElement, this.finishMove);
-        //console.log(this.board.blackPieces.King.getPossibleCells(this.board.blackPieces.King.position))
-        Game.self = this;
-        this.getElement = this.getElement.bind(this);
-    }
-    Game.prototype.getElement = function (elem) {
-        Game.self.resolveElement(elem.id, true);
-    };
-    Game.prototype.resolveElement = function (id, startMove) {
-        var buf = [];
-        var obj = {};
-        id.charAt(0) == "b" ? buf = this.board.blackPieces : buf = this.board.whitePieces;
-        for (var i = 0; i < buf.length; i++) {
-            if (buf[i].id == id) {
-                obj = buf[i];
-                break;
-            }
-        }
-        if (startMove) {
-            if (obj instanceof __WEBPACK_IMPORTED_MODULE_3__models_Pawn__["a" /* Pawn */])
-                this.pawnAction(obj);
-            if (obj instanceof __WEBPACK_IMPORTED_MODULE_6__models_Rok__["a" /* Rok */])
-                this.rokAction(obj);
-            if (obj instanceof __WEBPACK_IMPORTED_MODULE_5__models_Knight__["a" /* Knight */])
-                this.knightAction(obj);
-            if (obj instanceof __WEBPACK_IMPORTED_MODULE_4__models_Bishop__["a" /* Bishop */])
-                this.bishopAction(obj);
-            if (obj instanceof __WEBPACK_IMPORTED_MODULE_2__models_Queen__["a" /* Queen */])
-                this.queenAction(obj);
-            if (obj instanceof __WEBPACK_IMPORTED_MODULE_1__models_King__["a" /* King */])
-                this.kingAction(obj);
-        }
-        return obj;
-    };
-    Game.prototype.finishMove = function (elem, coords) {
-        var obj = Game.self.resolveElement(elem.id, false);
-        obj.position = new __WEBPACK_IMPORTED_MODULE_0__models_Coordinates__["a" /* Coordinates */](coords.x, coords.y);
-        if (obj instanceof __WEBPACK_IMPORTED_MODULE_3__models_Pawn__["a" /* Pawn */])
-            obj.makeFirstMove();
-        var cells = document.getElementsByClassName("cell");
-        for (var i = 0; i < cells.length; i++) {
-            cells[i].classList.remove("possibleCell", "droppable");
-        }
-    };
-    Game.prototype.pawnAction = function (pawn) {
-        var possibleMoves = [];
-        possibleMoves = pawn.getPossibleCells(pawn.position, pawn.color);
-        this.hightlightCells(possibleMoves);
-    };
-    Game.prototype.rokAction = function (rok) {
-        var possibleMoves = [];
-        possibleMoves = rok.getPossibleCells(rok.position, rok.color);
-        this.hightlightCells(possibleMoves);
-    };
-    Game.prototype.knightAction = function (knight) {
-        var possibleMoves = [];
-        possibleMoves = knight.getPossibleCells(knight.position, knight.color);
-        this.hightlightCells(possibleMoves);
-    };
-    Game.prototype.bishopAction = function (bishop) {
-        var possibleMoves = [];
-        possibleMoves = bishop.getPossibleCells(bishop.position, bishop.color);
-        this.hightlightCells(possibleMoves);
-    };
-    Game.prototype.queenAction = function (queen) {
-        var possibleMoves = [];
-        possibleMoves = queen.getPossibleCells(queen.position, queen.color);
-        this.hightlightCells(possibleMoves);
-    };
-    Game.prototype.kingAction = function (king) {
-        var possibleMoves = [];
-        possibleMoves = king.getPossibleCells(king.position, king.color);
-        this.hightlightCells(possibleMoves);
-    };
-    Game.prototype.hightlightCells = function (cellCoords) {
-        cellCoords.forEach(function (element) {
-            var buf = element.y.toString() + element.x.toString();
-            var cell = document.getElementById(buf);
-            cell.classList.add("possibleCell", "droppable");
-        });
-    };
-    return Game;
-}());
-
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_Game__ = __webpack_require__(5);
-
-var b = new __WEBPACK_IMPORTED_MODULE_0__src_Game__["a" /* Game */]();
-
-
-/***/ }),
-/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -484,19 +180,419 @@ var Bishop = (function (_super) {
 
 
 /***/ }),
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return King; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Piece__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Coordinates__ = __webpack_require__(1);
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+
+var King = (function (_super) {
+    __extends(King, _super);
+    function King(color, coordinates, id) {
+        var _this = this;
+        if (color == __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* Color */].Black) {
+            _this = _super.call(this, coordinates, true, "king-black", id, color) || this;
+        }
+        else {
+            _this = _super.call(this, coordinates, true, "king-white", id, color) || this;
+        }
+        return _this;
+    }
+    King.prototype.getPossibleCells = function (initCoords, figureColor, beat) {
+        var newCoords = [];
+        for (var i = -1; i < 2; i++) {
+            for (var j = -1; j < 2; j++) {
+                if (i == 0 && j == 0) {
+                    continue;
+                }
+                var coords = new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](initCoords.x + i, initCoords.y + j);
+                if (coords.x) {
+                    newCoords.push(coords);
+                }
+            }
+        }
+        return newCoords;
+    };
+    return King;
+}(__WEBPACK_IMPORTED_MODULE_0__Piece__["b" /* Piece */]));
+
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Knight; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Piece__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Coordinates__ = __webpack_require__(1);
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+
+var Knight = (function (_super) {
+    __extends(Knight, _super);
+    function Knight(color, coordinates, id) {
+        var _this = this;
+        if (color == __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* Color */].Black) {
+            _this = _super.call(this, coordinates, true, "knight-black", id, color) || this;
+        }
+        else {
+            _this = _super.call(this, coordinates, true, "knight-white", id, color) || this;
+        }
+        return _this;
+    }
+    Knight.prototype.getPossibleCells = function (initCoords, figureColor, beat) {
+        var newCoords = [];
+        var moves = [+1, +2, +2, +1, +2, -1, +1, -2, -1, -2, -1, -2, -2, -1, -2, +1, -1, +2];
+        for (var i = 0; i < moves.length; i += 2) {
+            var buf1 = moves[i];
+            var buf2 = moves[i + 1];
+            var c = new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](+initCoords.x + buf1, +initCoords.y + buf2);
+            if (c.x != undefined) {
+                newCoords.push(c);
+            }
+        }
+        return newCoords;
+    };
+    return Knight;
+}(__WEBPACK_IMPORTED_MODULE_0__Piece__["b" /* Piece */]));
+
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Pawn; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Piece__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Coordinates__ = __webpack_require__(1);
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+
+var Pawn = (function (_super) {
+    __extends(Pawn, _super);
+    function Pawn(color, coordinates, id) {
+        var _this = this;
+        if (color == __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* Color */].Black) {
+            _this = _super.call(this, coordinates, true, "pawn-black", id, color) || this;
+        }
+        else {
+            _this = _super.call(this, coordinates, true, "pawn-white", id, color) || this;
+        }
+        _this.madeFirstMove = false;
+        _this.id = id;
+        return _this;
+    }
+    Pawn.prototype.makeFirstMove = function () {
+        this.madeFirstMove = true;
+    };
+    Pawn.prototype.getPossibleCells = function (initCoords, figureColor, beat) {
+        var newCoords = [];
+        if (figureColor == __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* Color */].Black) {
+            if (this.madeFirstMove) {
+                newCoords.push(new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](initCoords.x, initCoords.y - 1));
+            }
+            else {
+                var c1 = new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](initCoords.x, initCoords.y - 1);
+                var c2 = new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](initCoords.x, initCoords.y - 2);
+                newCoords.push(c1, c2);
+            }
+            /*if(beat){
+                beat.forEach(element => {
+                    newCoords.push(new Coordinates(element.x, element.y));
+                });
+            }*/
+        }
+        else {
+            if (this.madeFirstMove) {
+                newCoords.push(new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](+initCoords.x, +initCoords.y + 1));
+            }
+            else {
+                var c1 = new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](+initCoords.x, +initCoords.y + 1);
+                var c2 = new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](+initCoords.x, +initCoords.y + 2);
+                newCoords.push(c1, c2);
+            }
+            /*if(beat){
+                beat.forEach(element => {
+                    newCoords.push(new Coordinates(element.x, element.y));
+                });
+            }
+            */
+        }
+        return newCoords;
+    };
+    return Pawn;
+}(__WEBPACK_IMPORTED_MODULE_0__Piece__["b" /* Piece */]));
+
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Queen; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Piece__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Coordinates__ = __webpack_require__(1);
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+
+var Queen = (function (_super) {
+    __extends(Queen, _super);
+    function Queen(color, coordinates, id) {
+        var _this = this;
+        if (color == __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* Color */].Black) {
+            _this = _super.call(this, coordinates, true, "queen-black", id, color) || this;
+        }
+        else {
+            _this = _super.call(this, coordinates, true, "queen-white", id, color) || this;
+        }
+        return _this;
+    }
+    Queen.prototype.getPossibleCells = function (initCoords, figureColor, beat) {
+        var newCoords = [];
+        for (var i = 1; i < 8; i++) {
+            var buf = new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](+initCoords.x - i, +initCoords.y - i);
+            var buf1 = new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](+initCoords.x + i, +initCoords.y + i);
+            var buf2 = new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](+initCoords.x - i, +initCoords.y + i);
+            var buf3 = new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](+initCoords.x + i, +initCoords.y - i);
+            console.log(buf);
+            console.log(buf1);
+            console.log(buf2);
+            console.log(buf3);
+            console.log("block");
+            if (buf.x != undefined) {
+                newCoords.push(buf);
+            }
+            if (buf1.x != undefined) {
+                newCoords.push(buf1);
+            }
+            if (buf2.x != undefined) {
+                newCoords.push(buf2);
+            }
+            if (buf3.x != undefined) {
+                newCoords.push(buf3);
+            }
+        }
+        for (var i = 0; i < 8; i++) {
+            if (initCoords.y == i)
+                continue;
+            newCoords.push(new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](initCoords.x, i));
+        }
+        for (var i = 0; i < 8; i++) {
+            if (initCoords.x == i)
+                continue;
+            newCoords.push(new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](i, initCoords.y));
+        }
+        return newCoords;
+    };
+    return Queen;
+}(__WEBPACK_IMPORTED_MODULE_0__Piece__["b" /* Piece */]));
+
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Rok; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Piece__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Coordinates__ = __webpack_require__(1);
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+
+var Rok = (function (_super) {
+    __extends(Rok, _super);
+    function Rok(color, coordinates, id) {
+        var _this = this;
+        if (color == __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* Color */].Black) {
+            _this = _super.call(this, coordinates, true, "rok-black", id, color) || this;
+        }
+        else {
+            _this = _super.call(this, coordinates, true, "rok-white", id, color) || this;
+        }
+        return _this;
+    }
+    Rok.prototype.getPossibleCells = function (initCoords, figureColor, board) {
+        var newCoords = [];
+        for (var i = 0; i < 8; i++) {
+            if (initCoords.y == i)
+                continue;
+            newCoords.push(new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](initCoords.x, i));
+        }
+        for (var i = 0; i < 8; i++) {
+            if (initCoords.x == i)
+                continue;
+            newCoords.push(new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](i, initCoords.y));
+        }
+        return newCoords;
+    };
+    Rok.prototype.checkInBlack = function (x, y, board) {
+        board.blackPieces.forEach(function (el) {
+            if (el.x == x && el.y == y) {
+                return true;
+            }
+        });
+        return false;
+    };
+    return Rok;
+}(__WEBPACK_IMPORTED_MODULE_0__Piece__["b" /* Piece */]));
+
+
+
+/***/ }),
 /* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Game; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_Coordinates__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_Pawn__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dragdrop__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_Board__ = __webpack_require__(10);
+
+
+
+
+var Game = (function () {
+    function Game() {
+        this.board = new __WEBPACK_IMPORTED_MODULE_3__models_Board__["a" /* Board */]();
+        this.drag = new __WEBPACK_IMPORTED_MODULE_2__dragdrop__["a" /* DragnDrop */](this.getElement, this.finishMove);
+        //console.log(this.board.blackPieces.King.getPossibleCells(this.board.blackPieces.King.position))
+        Game.self = this;
+        this.getElement = this.getElement.bind(this);
+    }
+    Game.prototype.getElement = function (elem) {
+        Game.self.resolveElement(elem.id, true);
+    };
+    Game.prototype.resolveElement = function (id, startMove) {
+        var buf = [];
+        var obj = {};
+        id.charAt(0) == "b" ? buf = this.board.blackPieces : buf = this.board.whitePieces;
+        for (var i = 0; i < buf.length; i++) {
+            if (buf[i].id == id) {
+                obj = buf[i];
+                break;
+            }
+        }
+        if (startMove) {
+            this.pieceAction(obj);
+        }
+        return obj;
+    };
+    Game.prototype.finishMove = function (elem, coords) {
+        var obj = Game.self.resolveElement(elem.id, false);
+        obj.position = new __WEBPACK_IMPORTED_MODULE_0__models_Coordinates__["a" /* Coordinates */](coords.x, coords.y);
+        if (obj instanceof __WEBPACK_IMPORTED_MODULE_1__models_Pawn__["a" /* Pawn */])
+            obj.makeFirstMove();
+        var cells = document.getElementsByClassName("cell");
+        for (var i = 0; i < cells.length; i++) {
+            cells[i].classList.remove("possibleCell", "droppable");
+        }
+    };
+    Game.prototype.pieceAction = function (piece) {
+        var possibleMoves = [];
+        possibleMoves = piece.getPossibleCells(piece.position, piece.color, this.board);
+        possibleMoves.forEach(function (element, i, arr) {
+            var cell = document.getElementById(element.y.toString() + element.x.toString());
+        });
+        this.hightlightCells(possibleMoves);
+    };
+    Game.prototype.hightlightCells = function (cellCoords) {
+        cellCoords.forEach(function (element) {
+            if (element != null) {
+                var buf = element.y.toString() + element.x.toString();
+                var cell = document.getElementById(buf);
+                cell.classList.add("possibleCell", "droppable");
+            }
+        });
+    };
+    return Game;
+}());
+
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_Game__ = __webpack_require__(8);
+
+var b = new __WEBPACK_IMPORTED_MODULE_0__src_Game__["a" /* Game */]();
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Board; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Cell__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Cell__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Coordinates__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__King__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Queen__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Pawn__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Bishop__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Knight__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__Rok__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__King__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Queen__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Pawn__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Bishop__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Knight__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__Rok__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__Piece__ = __webpack_require__(0);
 
 
@@ -660,7 +756,7 @@ var Board = (function () {
 
 
 /***/ }),
-/* 9 */
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -679,134 +775,6 @@ var Cell = (function () {
     };
     return Cell;
 }());
-
-
-
-/***/ }),
-/* 10 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return King; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Piece__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Coordinates__ = __webpack_require__(1);
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-
-
-
-var King = (function (_super) {
-    __extends(King, _super);
-    function King(color, coordinates, id) {
-        var _this = this;
-        if (color == __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* Color */].Black) {
-            _this = _super.call(this, coordinates, true, "king-black", id, color) || this;
-        }
-        else {
-            _this = _super.call(this, coordinates, true, "king-white", id, color) || this;
-        }
-        return _this;
-    }
-    King.prototype.getPossibleCells = function (initCoords, figureColor, beat) {
-        var newCoords = [];
-        for (var i = -1; i < 2; i++) {
-            for (var j = -1; j < 2; j++) {
-                if (i == 0 && j == 0) {
-                    continue;
-                }
-                var coords = new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](initCoords.x + i, initCoords.y + j);
-                if (coords.x) {
-                    newCoords.push(coords);
-                }
-            }
-        }
-        return newCoords;
-    };
-    return King;
-}(__WEBPACK_IMPORTED_MODULE_0__Piece__["b" /* Piece */]));
-
-
-
-/***/ }),
-/* 11 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Queen; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Piece__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Coordinates__ = __webpack_require__(1);
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-
-
-
-var Queen = (function (_super) {
-    __extends(Queen, _super);
-    function Queen(color, coordinates, id) {
-        var _this = this;
-        if (color == __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* Color */].Black) {
-            _this = _super.call(this, coordinates, true, "queen-black", id, color) || this;
-        }
-        else {
-            _this = _super.call(this, coordinates, true, "queen-white", id, color) || this;
-        }
-        return _this;
-    }
-    Queen.prototype.getPossibleCells = function (initCoords, figureColor, beat) {
-        var newCoords = [];
-        for (var i = 1; i < 8; i++) {
-            var buf = new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](+initCoords.x - i, +initCoords.y - i);
-            var buf1 = new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](+initCoords.x + i, +initCoords.y + i);
-            var buf2 = new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](+initCoords.x - i, +initCoords.y + i);
-            var buf3 = new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](+initCoords.x + i, +initCoords.y - i);
-            console.log(buf);
-            console.log(buf1);
-            console.log(buf2);
-            console.log(buf3);
-            console.log("block");
-            if (buf.x != undefined) {
-                newCoords.push(buf);
-            }
-            if (buf1.x != undefined) {
-                newCoords.push(buf1);
-            }
-            if (buf2.x != undefined) {
-                newCoords.push(buf2);
-            }
-            if (buf3.x != undefined) {
-                newCoords.push(buf3);
-            }
-        }
-        for (var i = 0; i < 8; i++) {
-            if (initCoords.y == i)
-                continue;
-            newCoords.push(new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](initCoords.x, i));
-        }
-        for (var i = 0; i < 8; i++) {
-            if (initCoords.x == i)
-                continue;
-            newCoords.push(new __WEBPACK_IMPORTED_MODULE_1__Coordinates__["a" /* Coordinates */](i, initCoords.y));
-        }
-        return newCoords;
-    };
-    return Queen;
-}(__WEBPACK_IMPORTED_MODULE_0__Piece__["b" /* Piece */]));
 
 
 
